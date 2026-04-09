@@ -3,6 +3,10 @@
 // APP.JS — Router, fetch helpers y bootstrap del ADS
 // =============================================================================
 
+// Namespace global para vistas — DEBE declararse antes que los view_*.html
+// porque cada vista hace `Views.xxx = {...}` al cargarse.
+const Views = {};
+
 const App = {
   user: null,
   currentView: null,
@@ -168,7 +172,4 @@ function api(funcName, payload) {
 // ARRANQUE
 // =============================================================================
 window.addEventListener('DOMContentLoaded', () => App.init());
-
-// Namespace para vistas (cada view_*.html lo extiende)
-const Views = {};
 </script>

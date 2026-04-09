@@ -53,6 +53,10 @@
 
   </div>
 
+  <!-- app.js DEBE ir antes que las vistas porque define el objeto `Views`
+       en el que cada view_*.html registra su renderer. -->
+  <?!= include('app.js') ?>
+
   <!-- Inclusión de TODAS las vistas (Apps Script no permite cargar HTML lazy) -->
   <?!= include('operativo/view_kardex') ?>
   <?!= include('operativo/view_ventas') ?>
@@ -64,6 +68,5 @@
   <?!= include('admin/view_bitacora') ?>
   <?!= include('admin/view_config') ?>
 
-  <?!= include('app.js') ?>
 </body>
 </html>
