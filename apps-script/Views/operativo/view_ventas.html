@@ -1,0 +1,60 @@
+<script>
+Views.ventas = {
+  async render() {
+    App.renderMain('<div class="placeholder">Cargando…</div>');
+    const res = await api('apiObtenerKardex', { vendedora_id: App.user.vendedora_id });
+    if (!res.ok) {
+      App.renderMain('<div class="card"><p class="muted">Error: ' + App.escapeHtml(res.error) + '</p></div>');
+      return;
+    }
+    const items = res.data.items;
+
+    let html = '<div class="page-header"><div><h1>🛒 Registrar Venta</h1><p class="subtitle">Selecciona una prenda de tu kardex y descuenta el stock automáticamente.</p></div></div>';
+
+    if (items.length === 0) {
+      html += '<div class="card"><p class="muted">No tienes prendas disponibles para vender.</p></div>';
+      App.renderMain(html);
+      return;
+    }
+
+    html += '<div class="card" style="max-width: 600px;">';
+    html += '<form id="venta-form">';
+    html += '<div class="form-group"><label>Prenda</label>';
+    html += '<select name="sku" required><option value="">— Selecciona —</option>';
+    items.forEach(it => {
+      html += '<option value="' + App.escapeHtml(it.sku) + '" data-max="' + it.cantidad + '">' +
+              App.escapeHtml(it.nombre) + ' · ' + App.escapeHtml(it.talla) +
+              ' (disponible: ' + it.cantidad + ')</option>';
+    });
+    html += '</select></div>';
+    html += '<div class="form-group"><label>Cantidad</label><input type="number" name="cantidad" min="1" value="1" required></div>';
+    html += '<div class="form-group"><label>Notas (opcional)</label><input type="text" name="notas" placeholder="Ej: Cliente María, pagado por Nequi"></div>';
+    html += '<button type="submit" class="btn btn-primary">💾 Registrar venta</button>';
+    html += '</form></div>';
+
+    App.renderMain(html);
+
+    document.getElementById('venta-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const data = {};
+      new FormData(e.target).forEach((v, k) => { data[k] = v; });
+      data.cantidad = parseInt(data.cantidad, 10);
+      data.vendedora_id = App.user.vendedora_id;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Guardando…';
+
+      const res = await api('apiRegistrarVenta', data);
+      if (res.ok) {
+        App.toast('✓ Venta registrada: ' + res.data.mov_id, 'success');
+        Views.ventas.render(); // refrescar
+      } else {
+        App.toast('Error: ' + res.error, 'error');
+        btn.disabled = false;
+        btn.textContent = '💾 Registrar venta';
+      }
+    });
+  }
+};
+</script>

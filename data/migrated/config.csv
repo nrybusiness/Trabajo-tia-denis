@@ -1,0 +1,6 @@
+clave,valor,descripcion
+moneda,COP,Moneda del sistema
+timezone,America/Bogota,Zona horaria
+version_schema,1.0,Versión del schema
+stock_bajo_umbral,2,Unidades para alerta de stock bajo
+permitir_stock_negativo,false,"Si true, permite ventas sin stock"

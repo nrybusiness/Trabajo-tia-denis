@@ -1,0 +1,143 @@
+<script>
+Views.catalogo = {
+  productos: [],
+  variantes: [],
+
+  async render() {
+    App.renderMain('<div class="placeholder">Cargando catálogo…</div>');
+    const [resP, resV] = await Promise.all([
+      api('apiListarProductos'),
+      api('apiListarVariantes')
+    ]);
+    if (!resP.ok || !resV.ok) {
+      App.renderMain('<div class="card"><p class="muted">Error cargando catálogo</p></div>');
+      return;
+    }
+    this.productos = resP.data;
+    this.variantes = resV.data;
+
+    let html = '<div class="page-header"><div><h1>🏷️ Catálogo</h1><p class="subtitle">' + this.productos.length + ' productos · ' + this.variantes.length + ' variantes</p></div>';
+    html += '<button class="btn btn-primary" id="btn-nuevo-producto">+ Nuevo producto</button></div>';
+
+    html += '<div class="toolbar"><input type="search" id="cat-search" placeholder="Buscar producto…"></div>';
+
+    html += '<div class="table-wrap"><table id="cat-table"><thead><tr>';
+    html += '<th>ID</th><th>Nombre</th><th>Categoría</th><th class="num">Variantes</th><th>Estado</th><th>Acciones</th>';
+    html += '</tr></thead><tbody>';
+    this.productos.forEach(p => {
+      const numVariantes = this.variantes.filter(v => v.producto_id === p.producto_id).length;
+      html += '<tr>';
+      html += '<td><code>' + App.escapeHtml(p.producto_id) + '</code></td>';
+      html += '<td>' + App.escapeHtml(p.nombre) + '</td>';
+      html += '<td>' + App.escapeHtml(p.categoria) + '</td>';
+      html += '<td class="num">' + numVariantes + '</td>';
+      html += '<td>' + (p.activo ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-default">Inactivo</span>') + '</td>';
+      html += '<td><button class="btn btn-sm" data-act="ver" data-id="' + p.producto_id + '">Variantes</button> <button class="btn btn-sm" data-act="editar" data-id="' + p.producto_id + '">Editar</button></td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    App.renderMain(html);
+
+    document.getElementById('btn-nuevo-producto').addEventListener('click', () => this.modalNuevoProducto());
+    document.getElementById('cat-search').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('#cat-table tbody tr').forEach(tr => {
+        tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+    document.querySelectorAll('[data-act]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        if (btn.dataset.act === 'editar') this.modalEditarProducto(id);
+        if (btn.dataset.act === 'ver') this.modalVariantes(id);
+      });
+    });
+  },
+
+  modalNuevoProducto() {
+    const html =
+      '<form>' +
+        '<div class="form-group"><label>Nombre</label><input name="nombre" required></div>' +
+        '<div class="form-group"><label>Categoría</label>' +
+          '<select name="categoria"><option>Leggins</option><option>Tops</option><option>Shorts</option><option>Hoodies</option><option>Faldas</option><option>Bikers</option><option>Joggers</option><option>Camisetas</option><option>Bodies</option><option>Otros</option></select>' +
+        '</div>' +
+        '<div class="modal-actions"><button type="submit" class="btn btn-primary">Crear</button></div>' +
+      '</form>';
+    App.modal('Nuevo producto', html, async (data, cerrar) => {
+      const res = await api('apiCrearProducto', data);
+      if (res.ok) {
+        App.toast('✓ Producto creado: ' + res.data.producto_id, 'success');
+        cerrar();
+        this.render();
+      } else {
+        App.toast('Error: ' + res.error, 'error');
+      }
+    });
+  },
+
+  modalEditarProducto(id) {
+    const p = this.productos.find(x => x.producto_id === id);
+    if (!p) return;
+    const html =
+      '<form>' +
+        '<input type="hidden" name="producto_id" value="' + id + '">' +
+        '<div class="form-group"><label>Nombre</label><input name="nombre" value="' + App.escapeHtml(p.nombre) + '" required></div>' +
+        '<div class="form-group"><label>Categoría</label><input name="categoria" value="' + App.escapeHtml(p.categoria) + '"></div>' +
+        '<div class="form-group"><label>Activo</label><select name="activo"><option value="true"' + (p.activo ? ' selected' : '') + '>Sí</option><option value="false"' + (!p.activo ? ' selected' : '') + '>No</option></select></div>' +
+        '<div class="modal-actions"><button type="submit" class="btn btn-primary">Guardar</button></div>' +
+      '</form>';
+    App.modal('Editar producto', html, async (data, cerrar) => {
+      data.activo = data.activo === 'true';
+      const res = await api('apiEditarProducto', data);
+      if (res.ok) {
+        App.toast('✓ Producto actualizado', 'success');
+        cerrar();
+        this.render();
+      } else {
+        App.toast('Error: ' + res.error, 'error');
+      }
+    });
+  },
+
+  modalVariantes(producto_id) {
+    const p = this.productos.find(x => x.producto_id === producto_id);
+    const vs = this.variantes.filter(v => v.producto_id === producto_id);
+    let html = '<p class="muted small">Producto: ' + App.escapeHtml(p.nombre) + '</p>';
+    if (vs.length === 0) {
+      html += '<p class="muted">Sin variantes aún.</p>';
+    } else {
+      html += '<table><thead><tr><th>SKU</th><th>Talla</th><th class="num">Precio dueña</th><th class="num">Oferta</th></tr></thead><tbody>';
+      vs.forEach(v => {
+        html += '<tr><td><code>' + v.sku + '</code></td><td>' + v.talla + '</td><td class="num">' + App.formatCop(v.precio_duena) + '</td><td class="num">' + App.formatCop(v.precio_oferta) + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '<hr style="margin: 16px 0; border: none; border-top: 1px solid var(--color-border);">';
+    html += '<h3 style="font-size: 14px; margin-bottom: 12px;">Crear nueva variante</h3>';
+    html +=
+      '<form>' +
+        '<input type="hidden" name="producto_id" value="' + producto_id + '">' +
+        '<div class="form-group"><label>Talla</label><select name="talla"><option value="U">Única</option><option value="SM">S/M</option><option value="LXL">L/XL</option></select></div>' +
+        '<div class="form-row"><div class="form-group"><label>Costo</label><input type="number" name="costo" min="0" required></div>' +
+        '<div class="form-group"><label>Precio dueña</label><input type="number" name="precio_duena" min="0" required></div>' +
+        '<div class="form-group"><label>Precio oferta</label><input type="number" name="precio_oferta" min="0" required></div></div>' +
+        '<div class="modal-actions"><button type="submit" class="btn btn-primary">+ Crear variante</button></div>' +
+      '</form>';
+
+    App.modal('Variantes de ' + producto_id, html, async (data, cerrar) => {
+      data.costo = parseInt(data.costo, 10);
+      data.precio_duena = parseInt(data.precio_duena, 10);
+      data.precio_oferta = parseInt(data.precio_oferta, 10);
+      const res = await api('apiCrearVariante', data);
+      if (res.ok) {
+        App.toast('✓ Variante creada: ' + res.data.sku, 'success');
+        cerrar();
+        this.render();
+      } else {
+        App.toast('Error: ' + res.error, 'error');
+      }
+    });
+  }
+};
+</script>

@@ -1,0 +1,90 @@
+<script>
+Views.config = {
+  async render() {
+    App.renderMain('<div class="placeholder">Cargando configuración…</div>');
+    const res = await api('apiConfigObtener');
+    if (!res.ok) {
+      App.renderMain('<div class="card"><p class="muted">Error: ' + App.escapeHtml(res.error) + '</p></div>');
+      return;
+    }
+    const items = res.data;
+    const isSuper = App.user.rol === 'superadmin';
+
+    let html = '<div class="page-header"><div><h1>⚙️ Configuración</h1><p class="subtitle">Parámetros del sistema</p></div></div>';
+
+    html += '<div class="table-wrap" style="max-width: 800px;"><table><thead><tr>';
+    html += '<th>Clave</th><th>Valor</th><th>Descripción</th>';
+    if (isSuper) html += '<th></th>';
+    html += '</tr></thead><tbody>';
+    items.forEach(c => {
+      html += '<tr>';
+      html += '<td><code>' + App.escapeHtml(c.clave) + '</code></td>';
+      html += '<td><strong>' + App.escapeHtml(c.valor) + '</strong></td>';
+      html += '<td class="muted small">' + App.escapeHtml(c.descripcion || '') + '</td>';
+      if (isSuper) {
+        html += '<td><button class="btn btn-sm" data-clave="' + App.escapeHtml(c.clave) + '" data-valor="' + App.escapeHtml(c.valor) + '">Editar</button></td>';
+      }
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    if (isSuper) {
+      html += '<div class="card" style="margin-top: 24px; max-width: 800px;">';
+      html += '<div class="card-title">🛠️ Utilidades de mantenimiento</div>';
+      html += '<button class="btn" id="btn-recalcular">🔄 Recalcular stock desde bitácora</button> ';
+      html += '<button class="btn" id="btn-backup">💾 Exportar backup JSON</button>';
+      html += '<p class="muted small" style="margin-top: 12px;">Recalcular reconstruye la hoja Stock íntegra a partir de Movimientos. Úsalo solo si detectas desincronización.</p>';
+      html += '</div>';
+    }
+
+    App.renderMain(html);
+
+    if (isSuper) {
+      document.querySelectorAll('button[data-clave]').forEach(btn => {
+        btn.addEventListener('click', () => this.modalEditar(btn.dataset.clave, btn.dataset.valor));
+      });
+      document.getElementById('btn-recalcular').addEventListener('click', async () => {
+        if (!confirm('¿Reconstruir la hoja Stock desde Movimientos?')) return;
+        const res = await api('apiRecalcularStock');
+        if (res.ok) App.toast('✓ Stock recalculado: ' + res.data.filas_escritas + ' filas', 'success');
+        else App.toast('Error: ' + res.error, 'error');
+      });
+      document.getElementById('btn-backup').addEventListener('click', async () => {
+        const res = await api('apiExportarBackup');
+        if (res.ok) {
+          const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'infinity-backup-' + new Date().toISOString().slice(0,10) + '.json';
+          a.click();
+          URL.revokeObjectURL(url);
+          App.toast('✓ Backup descargado', 'success');
+        } else {
+          App.toast('Error: ' + res.error, 'error');
+        }
+      });
+    }
+  },
+
+  modalEditar(clave, valor) {
+    const html =
+      '<form>' +
+        '<input type="hidden" name="clave" value="' + clave + '">' +
+        '<div class="form-group"><label>Clave</label><input value="' + clave + '" disabled></div>' +
+        '<div class="form-group"><label>Valor</label><input name="valor" value="' + App.escapeHtml(valor) + '" required></div>' +
+        '<div class="modal-actions"><button type="submit" class="btn btn-primary">Guardar</button></div>' +
+      '</form>';
+    App.modal('Editar configuración', html, async (data, cerrar) => {
+      const res = await api('apiConfigActualizar', data);
+      if (res.ok) {
+        App.toast('✓ Actualizado', 'success');
+        cerrar();
+        this.render();
+      } else {
+        App.toast('Error: ' + res.error, 'error');
+      }
+    });
+  }
+};
+</script>

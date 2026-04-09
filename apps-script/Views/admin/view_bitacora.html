@@ -1,0 +1,64 @@
+<script>
+Views.bitacora = {
+  async render() {
+    App.renderMain('<div class="placeholder">Cargando bitácora…</div>');
+    const res = await api('apiBitacoraListar', { limite: 200 });
+    if (!res.ok) {
+      App.renderMain('<div class="card"><p class="muted">Error: ' + App.escapeHtml(res.error) + '</p></div>');
+      return;
+    }
+    const movs = res.data;
+
+    let html = '<div class="page-header"><div><h1>📋 Bitácora de Movimientos</h1><p class="subtitle">Últimos ' + movs.length + ' movimientos</p></div></div>';
+
+    html += '<div class="toolbar">';
+    html += '<input type="search" id="bit-search" placeholder="Buscar…">';
+    html += '<select id="bit-tipo"><option value="">Todos los tipos</option><option value="VENTA">Ventas</option><option value="ENTREGA">Entregas</option><option value="INGRESO">Ingresos</option><option value="AJUSTE">Ajustes</option></select>';
+    html += '</div>';
+
+    html += '<div class="table-wrap"><table id="bit-table"><thead><tr>';
+    html += '<th>ID</th><th>Fecha</th><th>Tipo</th><th>Prenda</th><th>Talla</th><th class="num">Cant.</th><th>Origen</th><th>Destino</th><th>Notas</th>';
+    html += '</tr></thead><tbody>';
+    movs.forEach(m => {
+      html += '<tr data-tipo="' + m.tipo + '">';
+      html += '<td><code>' + m.mov_id + '</code></td>';
+      html += '<td class="small">' + App.formatFecha(m.fecha) + '</td>';
+      html += '<td>' + this.badgeTipo(m.tipo) + '</td>';
+      html += '<td>' + App.escapeHtml(m.producto_nombre) + '</td>';
+      html += '<td>' + App.escapeHtml(m.talla) + '</td>';
+      html += '<td class="num"><strong>' + m.cantidad + '</strong></td>';
+      html += '<td class="small">' + App.escapeHtml(m.vendedora_nombre) + '</td>';
+      html += '<td class="small">' + App.escapeHtml(m.destino_nombre || '—') + '</td>';
+      html += '<td class="small muted">' + App.escapeHtml(m.notas || '') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    App.renderMain(html);
+
+    const search = document.getElementById('bit-search');
+    const tipo = document.getElementById('bit-tipo');
+    function filtrar() {
+      const q = search.value.toLowerCase();
+      const t = tipo.value;
+      document.querySelectorAll('#bit-table tbody tr').forEach(tr => {
+        const matchT = !t || tr.dataset.tipo === t;
+        const matchQ = !q || tr.textContent.toLowerCase().includes(q);
+        tr.style.display = (matchT && matchQ) ? '' : 'none';
+      });
+    }
+    search.addEventListener('input', filtrar);
+    tipo.addEventListener('change', filtrar);
+  },
+
+  badgeTipo(t) {
+    const map = {
+      VENTA: 'badge-success',
+      ENTREGA: 'badge-warning',
+      INGRESO: 'badge-default',
+      AJUSTE: 'badge-error'
+    };
+    return '<span class="badge ' + (map[t] || 'badge-default') + '">' + t + '</span>';
+  }
+};
+</script>

@@ -1,0 +1,5 @@
+vendedora_id,nombre,email,rol,activo
+V00,Desarrollador,superadmin@placeholder.com,superadmin,TRUE
+V01,Lorena,lorena@placeholder.com,admin,TRUE
+V02,Nataly,nataly@placeholder.com,vendedora,TRUE
+V03,Carolina,carolina@placeholder.com,vendedora,TRUE

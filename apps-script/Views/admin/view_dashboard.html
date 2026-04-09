@@ -1,0 +1,90 @@
+<script>
+Views.dashboard = {
+  async render() {
+    App.renderMain('<div class="placeholder">Cargando dashboard…</div>');
+
+    // Default: últimos 30 días
+    const hasta = new Date().toISOString();
+    const desdeDate = new Date();
+    desdeDate.setDate(desdeDate.getDate() - 30);
+    const desde = desdeDate.toISOString();
+
+    const res = await api('apiDashboardResumen', { desde: desde, hasta: hasta });
+    if (!res.ok) {
+      App.renderMain('<div class="card"><p class="muted">Error: ' + App.escapeHtml(res.error) + '</p></div>');
+      return;
+    }
+    const d = res.data;
+
+    let html = '<div class="page-header"><div><h1>📊 Dashboard</h1><p class="subtitle">Resumen de los últimos 30 días</p></div></div>';
+
+    // KPIs principales
+    html += '<div class="grid grid-4" style="margin-bottom: 24px;">';
+    html += this.kpi('Total vendido', App.formatCop(d.total_vendido_cop), d.unidades_vendidas + ' unidades');
+    html += this.kpi('Inventario a costo', App.formatCop(d.valor_inventario_costo));
+    html += this.kpi('Inventario a venta', App.formatCop(d.valor_inventario_venta));
+    html += this.kpi('Alertas stock bajo', d.alertas_stock_bajo.length, 'requieren reposición');
+    html += '</div>';
+
+    // Ventas por vendedora
+    html += '<div class="grid grid-2" style="margin-bottom: 24px;">';
+    html += '<div class="card"><div class="card-title">👥 Ventas por vendedora</div>';
+    if (d.ventas_por_vendedora.length === 0) {
+      html += '<p class="muted">Sin ventas en el periodo</p>';
+    } else {
+      html += '<table><thead><tr><th>Vendedora</th><th class="num">Unidades</th><th class="num">Total</th></tr></thead><tbody>';
+      d.ventas_por_vendedora.forEach(v => {
+        html += '<tr><td>' + App.escapeHtml(v.nombre) + '</td><td class="num">' + v.unidades + '</td><td class="num"><strong>' + App.formatCop(v.total) + '</strong></td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '</div>';
+
+    // Top productos
+    html += '<div class="card"><div class="card-title">🏆 Top productos vendidos</div>';
+    if (d.top_productos.length === 0) {
+      html += '<p class="muted">Sin ventas en el periodo</p>';
+    } else {
+      html += '<table><thead><tr><th>Prenda</th><th>Talla</th><th class="num">Vendidas</th></tr></thead><tbody>';
+      d.top_productos.forEach(p => {
+        html += '<tr><td>' + App.escapeHtml(p.nombre) + '</td><td><span class="badge badge-default">' + App.escapeHtml(p.talla) + '</span></td><td class="num"><strong>' + p.unidades + '</strong></td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '</div></div>';
+
+    // Stock muerto + alertas
+    html += '<div class="grid grid-2">';
+    html += '<div class="card"><div class="card-title">💀 Stock sin movimiento</div>';
+    if (d.stock_muerto.length === 0) {
+      html += '<p class="muted">¡Todo el stock se está moviendo!</p>';
+    } else {
+      html += '<p class="muted small">' + d.stock_muerto.length + ' SKUs no se han vendido en el periodo</p>';
+      html += '<table><thead><tr><th>Prenda</th><th>Talla</th><th class="num">Stock</th></tr></thead><tbody>';
+      d.stock_muerto.slice(0, 10).forEach(p => {
+        html += '<tr><td>' + App.escapeHtml(p.nombre) + '</td><td>' + App.escapeHtml(p.talla) + '</td><td class="num">' + p.cantidad + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '</div>';
+
+    html += '<div class="card"><div class="card-title">⚠️ Alertas de stock bajo</div>';
+    if (d.alertas_stock_bajo.length === 0) {
+      html += '<p class="muted">Sin alertas</p>';
+    } else {
+      html += '<table><thead><tr><th>Prenda</th><th>Talla</th><th class="num">Quedan</th></tr></thead><tbody>';
+      d.alertas_stock_bajo.forEach(p => {
+        html += '<tr><td>' + App.escapeHtml(p.nombre) + '</td><td>' + App.escapeHtml(p.talla) + '</td><td class="num"><span class="badge badge-warning">' + p.cantidad + '</span></td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '</div></div>';
+
+    App.renderMain(html);
+  },
+
+  kpi(label, value, sub) {
+    return '<div class="kpi"><div class="kpi-label">' + label + '</div><div class="kpi-value">' + value + '</div>' + (sub ? '<div class="kpi-sub">' + sub + '</div>' : '') + '</div>';
+  }
+};
+</script>

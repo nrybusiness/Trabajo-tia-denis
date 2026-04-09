@@ -1,0 +1,174 @@
+<script>
+// =============================================================================
+// APP.JS — Router, fetch helpers y bootstrap del ADS
+// =============================================================================
+
+const App = {
+  user: null,
+  currentView: null,
+
+  // ===== BOOTSTRAP =====
+  async init() {
+    try {
+      const res = await api('apiObtenerSesion');
+      if (!res.ok) {
+        this.showUnauth(res);
+        return;
+      }
+      this.user = res.data;
+      this.renderShell();
+      this.navigate(this.defaultViewForRole());
+    } catch (e) {
+      this.showUnauth({ error: e.message });
+    }
+  },
+
+  defaultViewForRole() {
+    if (this.user.rol === 'vendedora') return 'kardex';
+    return 'dashboard';
+  },
+
+  showUnauth(res) {
+    document.getElementById('loader').classList.add('hidden');
+    document.getElementById('unauth').classList.remove('hidden');
+    if (res && res.error) {
+      document.getElementById('unauth-email').textContent = res.error;
+    }
+  },
+
+  renderShell() {
+    document.getElementById('loader').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('user-name').textContent = this.user.nombre;
+    document.getElementById('user-rol').textContent = this.user.rol;
+    this.renderNav();
+  },
+
+  renderNav() {
+    const nav = document.getElementById('app-nav');
+    const isAdmin = this.user.rol === 'admin' || this.user.rol === 'superadmin';
+    const isSuperadmin = this.user.rol === 'superadmin';
+
+    let html = '<div class="nav-section"><h3>Operación</h3>';
+    html += this.navItem('kardex', '📦', 'Mi Kardex');
+    html += this.navItem('ventas', '🛒', 'Registrar Venta');
+    html += this.navItem('entregas', '📤', 'Registrar Entrega');
+    html += this.navItem('precios', '💰', 'Lista de Precios');
+    html += '</div>';
+
+    if (isAdmin) {
+      html += '<div class="nav-section"><h3>Administración</h3>';
+      html += this.navItem('dashboard', '📊', 'Dashboard');
+      html += this.navItem('catalogo', '🏷️', 'Catálogo');
+      html += this.navItem('vendedoras', '👥', 'Vendedoras');
+      html += this.navItem('bitacora', '📋', 'Bitácora');
+      html += this.navItem('config', '⚙️', 'Configuración');
+      html += '</div>';
+    }
+
+    nav.innerHTML = html;
+    nav.querySelectorAll('.nav-item').forEach(btn => {
+      btn.addEventListener('click', () => this.navigate(btn.dataset.view));
+    });
+  },
+
+  navItem(view, ico, label) {
+    return '<button class="nav-item" data-view="' + view + '"><span class="ico">' + ico + '</span>' + label + '</button>';
+  },
+
+  // ===== NAVEGACIÓN =====
+  navigate(view) {
+    this.currentView = view;
+    document.querySelectorAll('.nav-item').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === view);
+    });
+    const renderer = Views[view];
+    if (!renderer) {
+      this.renderMain('<div class="placeholder">Vista no encontrada: ' + view + '</div>');
+      return;
+    }
+    renderer.render();
+  },
+
+  renderMain(html) {
+    document.getElementById('app-main').innerHTML = html;
+  },
+
+  // ===== TOAST =====
+  toast(msg, tipo) {
+    const t = document.getElementById('toast');
+    t.className = 'toast toast-' + (tipo || 'info');
+    t.textContent = msg;
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3500);
+  },
+
+  // ===== MODAL =====
+  modal(titulo, contenidoHtml, onSubmit) {
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop';
+    backdrop.innerHTML =
+      '<div class="modal">' +
+        '<div class="modal-header"><h2>' + titulo + '</h2><button class="modal-close">×</button></div>' +
+        '<div class="modal-body">' + contenidoHtml + '</div>' +
+      '</div>';
+    document.body.appendChild(backdrop);
+    const cerrar = () => backdrop.remove();
+    backdrop.querySelector('.modal-close').addEventListener('click', cerrar);
+    backdrop.addEventListener('click', e => { if (e.target === backdrop) cerrar(); });
+    if (onSubmit) {
+      const form = backdrop.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          const data = {};
+          new FormData(form).forEach((v, k) => { data[k] = v; });
+          onSubmit(data, cerrar);
+        });
+      }
+    }
+    return cerrar;
+  },
+
+  // ===== HELPERS DE FORMATEO =====
+  formatCop(n) {
+    if (n == null || isNaN(n)) return '';
+    return '$ ' + Number(n).toLocaleString('es-CO', { maximumFractionDigits: 0 });
+  },
+
+  formatFecha(iso) {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso);
+      return d.toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
+    } catch (e) { return iso; }
+  },
+
+  escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+};
+
+// =============================================================================
+// API HELPER — wrap google.script.run en una promesa
+// =============================================================================
+function api(funcName, payload) {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler(resolve)
+      .withFailureHandler(err => reject(err))
+      [funcName](payload);
+  });
+}
+
+// =============================================================================
+// ARRANQUE
+// =============================================================================
+window.addEventListener('DOMContentLoaded', () => App.init());
+
+// Namespace para vistas (cada view_*.html lo extiende)
+const Views = {};
+</script>

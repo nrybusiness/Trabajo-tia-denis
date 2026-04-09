@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INFINITY — Inventario</title>
+  <?!= include('styles') ?>
+</head>
+<body>
+
+  <!-- Pantalla de carga inicial -->
+  <div id="loader" class="loader-screen">
+    <div class="spinner"></div>
+    <p>Cargando…</p>
+  </div>
+
+  <!-- Pantalla de no autorizado -->
+  <div id="unauth" class="unauth-screen hidden">
+    <div class="card">
+      <h1>🔒 Acceso no autorizado</h1>
+      <p>Tu cuenta de Google no está registrada en el sistema.</p>
+      <p class="muted">Contacta al administrador para que registre tu email.</p>
+      <p class="muted small" id="unauth-email"></p>
+    </div>
+  </div>
+
+  <!-- App principal -->
+  <div id="app" class="app hidden">
+
+    <!-- Header con info de usuario -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-logo">∞</span>
+        <span class="brand-name">INFINITY</span>
+      </div>
+      <div class="user-info">
+        <span id="user-name"></span>
+        <span class="user-rol" id="user-rol"></span>
+      </div>
+    </header>
+
+    <!-- Navegación lateral -->
+    <nav class="app-nav" id="app-nav"></nav>
+
+    <!-- Contenido principal -->
+    <main class="app-main" id="app-main">
+      <div class="placeholder">Cargando vista…</div>
+    </main>
+
+    <!-- Toast de notificaciones -->
+    <div id="toast" class="toast hidden"></div>
+
+  </div>
+
+  <!-- Inclusión de TODAS las vistas (Apps Script no permite cargar HTML lazy) -->
+  <?!= include('operativo/view_kardex') ?>
+  <?!= include('operativo/view_ventas') ?>
+  <?!= include('operativo/view_entregas') ?>
+  <?!= include('operativo/view_precios') ?>
+  <?!= include('admin/view_dashboard') ?>
+  <?!= include('admin/view_catalogo') ?>
+  <?!= include('admin/view_vendedoras') ?>
+  <?!= include('admin/view_bitacora') ?>
+  <?!= include('admin/view_config') ?>
+
+  <?!= include('app.js') ?>
+</body>
+</html>

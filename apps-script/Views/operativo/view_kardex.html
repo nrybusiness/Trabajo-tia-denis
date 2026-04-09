@@ -1,0 +1,56 @@
+<script>
+Views.kardex = {
+  async render() {
+    App.renderMain('<div class="placeholder">Cargando kardex…</div>');
+    const res = await api('apiObtenerKardex', { vendedora_id: App.user.vendedora_id });
+    if (!res.ok) {
+      App.renderMain('<div class="card"><p class="muted">Error: ' + App.escapeHtml(res.error) + '</p></div>');
+      return;
+    }
+    const { items, resumen } = res.data;
+
+    let html = '<div class="page-header"><div><h1>📦 Mi Kardex</h1><p class="subtitle">' + items.length + ' SKUs · ' + resumen.total_unidades + ' unidades</p></div></div>';
+
+    // KPIs
+    html += '<div class="grid grid-4" style="margin-bottom: 20px;">';
+    html += '<div class="kpi"><div class="kpi-label">Total SKUs</div><div class="kpi-value">' + resumen.total_skus + '</div></div>';
+    html += '<div class="kpi"><div class="kpi-label">Unidades totales</div><div class="kpi-value">' + resumen.total_unidades + '</div></div>';
+    html += '<div class="kpi"><div class="kpi-label">Valor a costo</div><div class="kpi-value">' + App.formatCop(resumen.valor_costo) + '</div></div>';
+    html += '<div class="kpi"><div class="kpi-label">Valor a venta</div><div class="kpi-value">' + App.formatCop(resumen.valor_venta) + '</div></div>';
+    html += '</div>';
+
+    if (items.length === 0) {
+      html += '<div class="card"><p class="muted">No tienes prendas en tu kardex aún.</p></div>';
+    } else {
+      html += '<div class="toolbar"><input type="search" id="kx-search" placeholder="Buscar prenda…"></div>';
+      html += '<div class="table-wrap"><table id="kx-table"><thead><tr>';
+      html += '<th>SKU</th><th>Prenda</th><th>Talla</th><th class="num">Cantidad</th><th class="num">Precio venta</th><th class="num">Valor total</th>';
+      html += '</tr></thead><tbody>';
+      items.forEach(it => {
+        html += '<tr>';
+        html += '<td><code>' + App.escapeHtml(it.sku) + '</code></td>';
+        html += '<td>' + App.escapeHtml(it.nombre) + '</td>';
+        html += '<td><span class="badge badge-default">' + App.escapeHtml(it.talla) + '</span></td>';
+        html += '<td class="num"><strong>' + it.cantidad + '</strong></td>';
+        html += '<td class="num">' + App.formatCop(it.precio_oferta) + '</td>';
+        html += '<td class="num">' + App.formatCop(it.valor_venta) + '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+
+    App.renderMain(html);
+
+    // Filtro de búsqueda
+    const search = document.getElementById('kx-search');
+    if (search) {
+      search.addEventListener('input', () => {
+        const q = search.value.toLowerCase();
+        document.querySelectorAll('#kx-table tbody tr').forEach(tr => {
+          tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+      });
+    }
+  }
+};
+</script>

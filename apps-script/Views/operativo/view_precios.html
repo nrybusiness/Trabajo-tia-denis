@@ -1,0 +1,55 @@
+<script>
+Views.precios = {
+  async render() {
+    App.renderMain('<div class="placeholder">Cargando precios…</div>');
+    const res = await api('apiObtenerPrecios');
+    if (!res.ok) {
+      App.renderMain('<div class="card"><p class="muted">Error: ' + App.escapeHtml(res.error) + '</p></div>');
+      return;
+    }
+    const items = res.data;
+    const disponibles = items.filter(i => i.hay).length;
+
+    let html = '<div class="page-header"><div><h1>💰 Lista de Precios</h1><p class="subtitle">' + disponibles + ' disponibles · ' + items.length + ' totales</p></div></div>';
+
+    html += '<div class="toolbar">';
+    html += '<input type="search" id="pr-search" placeholder="Buscar prenda…">';
+    html += '<select id="pr-filter"><option value="todas">Mostrar todas</option><option value="hay">Solo disponibles</option><option value="nohay">Solo agotadas</option></select>';
+    html += '</div>';
+
+    html += '<div class="table-wrap"><table id="pr-table"><thead><tr>';
+    html += '<th>Prenda</th><th>Talla</th><th class="num">Precio dueña</th><th class="num">Tu precio</th><th>Disponibilidad</th>';
+    html += '</tr></thead><tbody>';
+    items.forEach(it => {
+      const stockBadge = it.hay
+        ? '<span class="badge badge-success">Hay (' + it.cantidad + ')</span>'
+        : '<span class="badge badge-error">Agotado</span>';
+      html += '<tr data-hay="' + (it.hay ? '1' : '0') + '">';
+      html += '<td>' + App.escapeHtml(it.nombre) + '</td>';
+      html += '<td><span class="badge badge-default">' + App.escapeHtml(it.talla) + '</span></td>';
+      html += '<td class="num muted">' + App.formatCop(it.precio_duena) + '</td>';
+      html += '<td class="num"><strong>' + App.formatCop(it.precio_oferta) + '</strong></td>';
+      html += '<td>' + stockBadge + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    App.renderMain(html);
+
+    const search = document.getElementById('pr-search');
+    const filter = document.getElementById('pr-filter');
+    function aplicar() {
+      const q = search.value.toLowerCase();
+      const f = filter.value;
+      document.querySelectorAll('#pr-table tbody tr').forEach(tr => {
+        const matchTexto = tr.textContent.toLowerCase().includes(q);
+        const hay = tr.dataset.hay === '1';
+        const matchFiltro = f === 'todas' || (f === 'hay' && hay) || (f === 'nohay' && !hay);
+        tr.style.display = (matchTexto && matchFiltro) ? '' : 'none';
+      });
+    }
+    search.addEventListener('input', aplicar);
+    filter.addEventListener('change', aplicar);
+  }
+};
+</script>

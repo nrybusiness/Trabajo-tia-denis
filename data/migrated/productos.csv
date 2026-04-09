@@ -1,0 +1,49 @@
+producto_id,nombre,categoria,activo
+P001,Leggins BiTone Azul-Rosado,Leggins,TRUE
+P002,Leggins BiTone Negro-Amarillo,Leggins,TRUE
+P003,Hoodie BiTone Azul - Rosado,Hoodies,TRUE
+P004,Hoodie BiTone Negro - Amarillo,Hoodies,TRUE
+P005,Top Bi-tono Azul-Rosado,Tops,TRUE
+P006,Top Bi-tono Negro-Amarillo,Tops,TRUE
+P007,Top Sujetador Support Bra Negro,Tops,TRUE
+P008,Top Sujetador Support Bra Azul,Tops,TRUE
+P009,Biker BiTone Negro-Amarillo,Bikers,TRUE
+P010,Short Bi-Tone Negro-Amarillo,Shorts,TRUE
+P011,Short Bi-Tone Azul-Rosado,Shorts,TRUE
+P012,Jogger Azul-Rosado,Joggers,TRUE
+P013,Camiseta corta Negra you vs you FOIL,Camisetas,TRUE
+P014,Camiseta corta Negra you vs you TEXTIL,Camisetas,TRUE
+P015,Top Basico Negro Ajustable,Tops,TRUE
+P016,Faldas Bitono Negro-Amarillo,Faldas,TRUE
+P017,Faldas Bitono Azul-Rosado,Faldas,TRUE
+P018,Camiseta manga corta Amorela,Camisetas,TRUE
+P019,Sisa Malla Capriati azul,Camisetas,TRUE
+P020,Sisa Malla Capriati negra,Camisetas,TRUE
+P021,Sisa TUL Negro,Camisetas,TRUE
+P022,Holgada Tul Negra,Camisetas,TRUE
+P023,Holgada Tul Blanca,Camisetas,TRUE
+P024,Leggins Texturizado Fajon,Leggins,TRUE
+P025,Top Tiangulo Texturizado,Tops,TRUE
+P026,Top Ojal Texturizada,Tops,TRUE
+P027,Crop Top Manga Larga Negro,Tops,TRUE
+P028,Crop Top Manga Larga Azul,Tops,TRUE
+P029,Short Basico Negro Resorte,Shorts,TRUE
+P030,Short Basico Fajon,Shorts,TRUE
+P031,Leggings Gris,Leggins,TRUE
+P032,Top Gris 3 x 3 HIELO,Tops,TRUE
+P033,Top basico Triangular - Tiras Chinzado,Tops,TRUE
+P034,Leggings Chinzado WET,Leggins,TRUE
+P035,Short Transparencia CRYSTAL,Shorts,TRUE
+P036,Top transparencia CRYSTAL,Tops,TRUE
+P037,Top Support bra Crystal Wet,Tops,TRUE
+P038,Leggings Crystal Wet,Leggins,TRUE
+P039,Short bi-wet,Shorts,TRUE
+P040,Top S Crystal Wet,Tops,TRUE
+P041,Body Crystal Shape,Bodies,TRUE
+P042,Body Escote Black,Bodies,TRUE
+P043,Body Escote Blue,Bodies,TRUE
+P044,Mini Buso NEGRO,Hoodies,TRUE
+P045,Leggins gris ratón,Leggins,TRUE
+P046,Leggins gris hielo,Leggins,TRUE
+P047,short gris hielo,Shorts,TRUE
+P048,yoga pants,Otros,TRUE

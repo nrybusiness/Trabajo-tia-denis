@@ -1,0 +1,87 @@
+mov_id,fecha,tipo,sku,cantidad,vendedora_id,destino_id,notas,usuario_email
+M0001,2026-01-01T00:00:00-05:00,VENTA,P001-SM,2,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0002,2026-01-01T00:00:00-05:00,VENTA,P002-SM,1,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0003,2026-01-01T00:00:00-05:00,VENTA,P003-U,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0004,2026-01-01T00:00:00-05:00,VENTA,P004-U,1,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0005,2026-01-01T00:00:00-05:00,VENTA,P005-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0006,2026-01-01T00:00:00-05:00,VENTA,P007-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0007,2026-01-01T00:00:00-05:00,VENTA,P008-SM,2,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0008,2026-01-01T00:00:00-05:00,VENTA,P011-SM,4,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0009,2026-01-01T00:00:00-05:00,VENTA,P014-U,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0010,2026-01-01T00:00:00-05:00,VENTA,P016-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0011,2026-01-01T00:00:00-05:00,VENTA,P016-SM,2,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0012,2026-01-01T00:00:00-05:00,VENTA,P017-SM,1,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0013,2026-01-01T00:00:00-05:00,VENTA,P018-SM,2,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0014,2026-01-01T00:00:00-05:00,VENTA,P019-U,1,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0015,2026-01-01T00:00:00-05:00,VENTA,P022-U,3,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0016,2026-01-01T00:00:00-05:00,VENTA,P022-U,4,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0017,2026-01-01T00:00:00-05:00,VENTA,P023-U,2,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0018,2026-01-01T00:00:00-05:00,VENTA,P029-SM,1,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0019,2026-01-01T00:00:00-05:00,VENTA,P032-SM,1,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0020,2026-01-01T00:00:00-05:00,VENTA,P034-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0021,2026-01-01T00:00:00-05:00,VENTA,P035-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0022,2026-01-01T00:00:00-05:00,VENTA,P040-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0023,2026-01-01T00:00:00-05:00,VENTA,P041-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0024,2026-01-01T00:00:00-05:00,VENTA,P042-SM,3,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0025,2026-01-01T00:00:00-05:00,VENTA,P047-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0026,2026-01-01T00:00:00-05:00,VENTA,P047-SM,1,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0027,2026-01-01T00:00:00-05:00,VENTA,P048-SM,1,V02,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0028,2026-01-01T00:00:00-05:00,VENTA,P048-SM,3,V03,,Migración histórica desde CSV legacy,superadmin@placeholder.com
+M0029,2026-01-01T00:00:00-05:00,INGRESO,P001-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0030,2026-01-01T00:00:00-05:00,INGRESO,P001-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0031,2026-01-01T00:00:00-05:00,INGRESO,P002-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0032,2026-01-01T00:00:00-05:00,INGRESO,P002-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0033,2026-01-01T00:00:00-05:00,INGRESO,P003-U,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0034,2026-01-01T00:00:00-05:00,INGRESO,P005-SM,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0035,2026-01-01T00:00:00-05:00,INGRESO,P007-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0036,2026-01-01T00:00:00-05:00,INGRESO,P008-SM,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0037,2026-01-01T00:00:00-05:00,INGRESO,P008-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0038,2026-01-01T00:00:00-05:00,INGRESO,P009-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0039,2026-01-01T00:00:00-05:00,INGRESO,P010-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0040,2026-01-01T00:00:00-05:00,INGRESO,P010-LXL,4,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0041,2026-01-01T00:00:00-05:00,INGRESO,P011-SM,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0042,2026-01-01T00:00:00-05:00,INGRESO,P011-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0043,2026-01-01T00:00:00-05:00,INGRESO,P012-SM,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0044,2026-01-01T00:00:00-05:00,INGRESO,P013-U,3,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0045,2026-01-01T00:00:00-05:00,INGRESO,P014-U,3,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0046,2026-01-01T00:00:00-05:00,INGRESO,P015-U,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0047,2026-01-01T00:00:00-05:00,INGRESO,P016-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0048,2026-01-01T00:00:00-05:00,INGRESO,P017-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0049,2026-01-01T00:00:00-05:00,INGRESO,P018-SM,3,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0050,2026-01-01T00:00:00-05:00,INGRESO,P018-LXL,4,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0051,2026-01-01T00:00:00-05:00,INGRESO,P019-U,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0052,2026-01-01T00:00:00-05:00,INGRESO,P020-U,3,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0053,2026-01-01T00:00:00-05:00,INGRESO,P021-U,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0054,2026-01-01T00:00:00-05:00,INGRESO,P022-U,3,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0055,2026-01-01T00:00:00-05:00,INGRESO,P023-U,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0056,2026-01-01T00:00:00-05:00,INGRESO,P025-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0057,2026-01-01T00:00:00-05:00,INGRESO,P027-LXL,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0058,2026-01-01T00:00:00-05:00,INGRESO,P028-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0059,2026-01-01T00:00:00-05:00,INGRESO,P028-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0060,2026-01-01T00:00:00-05:00,INGRESO,P029-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0061,2026-01-01T00:00:00-05:00,INGRESO,P029-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0062,2026-01-01T00:00:00-05:00,INGRESO,P030-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0063,2026-01-01T00:00:00-05:00,INGRESO,P030-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0064,2026-01-01T00:00:00-05:00,INGRESO,P032-SM,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0065,2026-01-01T00:00:00-05:00,INGRESO,P032-LXL,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0066,2026-01-01T00:00:00-05:00,INGRESO,P033-SM,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0067,2026-01-01T00:00:00-05:00,INGRESO,P033-LXL,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0068,2026-01-01T00:00:00-05:00,INGRESO,P035-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0069,2026-01-01T00:00:00-05:00,INGRESO,P035-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0070,2026-01-01T00:00:00-05:00,INGRESO,P036-SM,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0071,2026-01-01T00:00:00-05:00,INGRESO,P037-SM,3,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0072,2026-01-01T00:00:00-05:00,INGRESO,P038-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0073,2026-01-01T00:00:00-05:00,INGRESO,P039-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0074,2026-01-01T00:00:00-05:00,INGRESO,P040-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0075,2026-01-01T00:00:00-05:00,INGRESO,P040-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0076,2026-01-01T00:00:00-05:00,INGRESO,P041-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0077,2026-01-01T00:00:00-05:00,INGRESO,P042-LXL,3,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0078,2026-01-01T00:00:00-05:00,INGRESO,P043-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0079,2026-01-01T00:00:00-05:00,INGRESO,P043-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0080,2026-01-01T00:00:00-05:00,INGRESO,P044-U,2,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0081,2026-01-01T00:00:00-05:00,INGRESO,P045-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0082,2026-01-01T00:00:00-05:00,INGRESO,P045-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0083,2026-01-01T00:00:00-05:00,INGRESO,P047-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0084,2026-01-01T00:00:00-05:00,INGRESO,P047-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0085,2026-01-01T00:00:00-05:00,INGRESO,P048-SM,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
+M0086,2026-01-01T00:00:00-05:00,INGRESO,P048-LXL,1,V01,V02,Migración: stock asignado a Nataly según kardex,superadmin@placeholder.com
